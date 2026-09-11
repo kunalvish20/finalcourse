@@ -8,7 +8,7 @@ export const siteConfig = {
   titleTop: "TURN YOUR GAMING PASSION",
   titleAccent: "INTO A DREAM JOB.",
   description:
-    "A practical course for gaming creators who want better videos, stronger thumbnails, faster growth and a repeatable YouTube system — without guessing what to upload next.",
+    "Dattrax Gaming reveals powerful gaming secrets, proven strategies, hidden techniques, and practical tips learned through years of experience. If you want to improve your skills, understand gaming better, and grow seriously as a gamer, this course is built for you.",
   courseName: process.env.NEXT_PUBLIC_COURSE_NAME || "YouTube Gaming Blueprint",
   priceLabel: formatINRFromPaise(COURSE_BASE_PRICE_PAISE),
   mrpLabel: process.env.NEXT_PUBLIC_COURSE_MRP || "₹1,999",
