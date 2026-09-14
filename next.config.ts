@@ -14,6 +14,18 @@ const protectedHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "yt3.ggpht.com",
+      },
+      {
+        protocol: "https",
+        hostname: "yt3.googleusercontent.com",
+      },
+    ],
+  },
   async headers() {
     return [
       { source: "/:path*", headers: securityHeaders },

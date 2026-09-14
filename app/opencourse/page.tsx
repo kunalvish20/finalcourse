@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import VideoFrame from "@/components/VideoFrame";
 import SignOutButton from "@/components/SignOutButton";
 import { getCurrentUser, hasLifetimeCourseAccess } from "@/lib/auth";
+import { signMuxPlayerUrl } from "@/lib/mux/signPlaybackUrl";
 import { modules, siteConfig } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
@@ -18,15 +19,8 @@ const lessonUrls = [
   process.env.COURSE_VIDEO_6_URL || "",
   process.env.COURSE_VIDEO_7_URL || "",
   process.env.COURSE_VIDEO_8_URL || "",
+  process.env.COURSE_VIDEO_9_URL || "",
 ];
-
-const courseVideos = modules.map(([number, title, description], index) => ({
-  number,
-  title,
-  description,
-  url: lessonUrls[index] || "",
-  duration: `MODULE ${number}`,
-}));
 
 export const metadata: Metadata = {
   title: `Course | ${siteConfig.courseName}`,
@@ -42,11 +36,19 @@ export default async function OpenCoursePage() {
   if (!user) redirect("/login?next=/opencourse");
   if (!(await hasLifetimeCourseAccess(user.id))) return <LockedCourse />;
 
+  const courseVideos = modules.map(([number, title, description], index) => ({
+    number,
+    title,
+    description,
+    url: signMuxPlayerUrl(lessonUrls[index] || ""),
+    duration: `MODULE ${number}`,
+  }));
+
   return <main className="coursePage">
     <header className="courseNav container"><Link href="/" className="logo"><img src="/Logo_dattrax.jpg" alt="Dattrax" className="logoImg" /><span>DATTRAX GAMING</span></Link><div className="courseAccount"><span><i className="accessDot" /> LIFETIME ACCESS</span><SignOutButton /></div></header>
     <section className="courseHero container" data-reveal=""><div className="sectionNo">WELCOME TO THE COURSE</div><h1>YOUR GAMING CHANNEL<br /><em>GROWTH SYSTEM.</em></h1><p>Your verified purchase is linked to your Google account, so you can log in again later and keep lifetime access.</p><div className="courseAccessMeta"><span>PAYMENT VERIFIED</span><span>LIFETIME ACCOUNT ACCESS</span><span>PRIVATE COURSE AREA</span></div></section>
     <section className="singleCourse container" data-reveal=""><div className="singleCourseMeta"><span className="sectionNo">COMPLETE COURSE VIDEO</span><h2>{siteConfig.courseName}</h2><p>Watch the lesson below, then use the module map as your implementation checklist.</p></div><div className="courseVideoList" data-stagger="">{courseVideos.map(video => <article className="courseVideoCard" key={video.number}><div className="courseVideoCardTop"><span>{video.number}</span><small>{video.duration}</small></div><div className="courseVideoShell"><div className="videoTopbar"><div className="dots" aria-hidden="true"><i /><i /><i /></div><span>PRIVATE LESSON PLAYER</span><b>VERIFIED</b></div><VideoFrame url={video.url} title={video.title} locked /></div><div className="courseVideoText"><h3>{video.title}</h3><p>{video.description}</p></div></article>)}</div></section>
     <section className="courseOutline container" data-stagger="">{modules.map(([num,title,desc]) => <article className="courseOutlineItem" key={num}><span>{num}</span><div><h3>{title}</h3><p>{desc}</p></div></article>)}</section>
-    <section className="courseFooter container" data-reveal=""><div><span className="sectionNo">YOU&apos;VE GOT THE SYSTEM</span><h2>NOW GO <em>SHIP.</em></h2></div><Link href="/" className="backHome">Back to main website</Link></section>
+    <section className="courseFooter container" data-reveal=""><div><span className="sectionNo">YOU&apos;VE GOT THE SYSTEM</span><h2>NOW GO & BECOME <em>  A GAMER.</em></h2></div><Link href="/" className="backHome">Back to main website</Link></section>
   </main>;
 }
