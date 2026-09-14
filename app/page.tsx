@@ -289,8 +289,10 @@ export default async function Home() {
           </div>
           <div className="faqList" data-stagger="">
             <details open><summary><span>01</span>What is inside the course?</summary><p>You get 9 focused modules: creator journey, mobile growth, PC growth, resources, titles, descriptions, thumbnails, monetization and two view-growth methods.</p></details>
-            <details><summary><span>02</span>Are the channel stats real?</summary><p>Yes. Creator network cards use YouTube Data API stats from the configured channel IDs and refresh automatically. No fake subscriber, video or view numbers are shown.</p></details>
-            <details><summary><span>03</span>How do I get access?</summary><p>Continue with Google, complete the PayU checkout, and the server verifies your payment before lifetime course access is added to your account.</p></details>
+            <details><summary><span>02</span>Are the channel stats real?</summary><p>Dattrax Gaming operates 6 active YouTube channels, building a strong and growing presence across the gaming community.
+Each channel consistently reaches viewers through engaging gaming content, regular uploads, and an expanding audience.</p></details>
+            <details><summary><span>03</span>How do I get access?</summary><p>Continue with Google to create your account and complete your payment securely.
+Once confirmed, you’ll get lifetime access to the complete course.</p></details>
             <details><summary><span>04</span>Is this a subscription?</summary><p>No. This is a one-time course purchase. Your verified access stays linked to the Google account used at checkout.</p></details>
             <details><summary><span>05</span>Can I watch on mobile?</summary><p>Yes. The website, checkout and protected course area are designed for desktop, tablet and mobile screens.</p></details>
           </div>
