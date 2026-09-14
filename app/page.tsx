@@ -248,39 +248,11 @@ export default async function Home() {
         </div>
       </section>
 
-      <section className="section audienceSection">
-        <div className="container audience">
-          <div className="audienceVisual" data-reveal="left">
-            <div className="audienceGrid" aria-hidden="true" />
-            <img className="audiencePhoto" src="/Harvest.png" alt="Gaming creator in a red studio setup" />
-            <div className="crosshair" aria-hidden="true"><span /><span /></div>
-            <span className="tag tag1">CREATOR MODE</span>
-            <span className="tag tag2">GAMING / YOUTUBE</span>
-            <div className="bigNumber" aria-hidden="true">99</div>
-            <div className="audienceSignal"><i /> SYSTEM ONLINE</div>
-            <p>Uploads get easier when the system behind them gets better.</p>
-          </div>
-
-          <div className="audienceCopy" data-reveal="right">
-            <div className="sectionNo">03 — WHO THIS IS FOR</div>
-            <h2>BUILT FOR PASSIONATE GAMERS<br />WHO WANT TO <em>GO PRO.</em></h2>
-            <p className="audienceLead">Not another “go viral” checklist. This is for gamers who are serious about turning passion into a disciplined creator journey.</p>
-            <ul data-stagger="">
-              <li><b>01</b><span>You already post gaming content but growth feels random.</span></li>
-              <li><b>02</b><span>You want stronger video ideas, thumbnails and retention.</span></li>
-              <li><b>03</b><span>You want a repeatable workflow instead of chasing hacks.</span></li>
-              <li><b>04</b><span>You want to turn a channel into a long-term creator business.</span></li>
-            </ul>
-            <BuyButton label="START BUILDING" />
-          </div>
-        </div>
-      </section>
-
       <section className="section priceSection">
         <div className="priceGlow" data-parallax="5" aria-hidden="true" />
         <div className="container priceCard" data-reveal="">
           <div className="priceCopy">
-            <div className="sectionNo">04 — INSTANT ACCESS</div>
+            <div className="sectionNo">03 — INSTANT ACCESS</div>
             <h2>BUILD YOUR GAMING<br /><em>CARRER NOW</em></h2>
             <p>Get the complete {siteConfig.courseName}, future lesson updates, and immediate access after successful server-side payment verification.</p>
             <div className="priceProof">
@@ -311,7 +283,7 @@ export default async function Home() {
       <section id="faq" className="section faqSection">
         <div className="container faq">
           <div className="faqHeading" data-reveal="left">
-            <div className="sectionNo">05 — FAQ</div>
+            <div className="sectionNo">04 — FAQ</div>
             <h2>QUESTIONS.<br /><em>ANSWERED.</em></h2>
             <p>Course access, live YouTube proof, modules and payment answers in one place.</p>
           </div>
