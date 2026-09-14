@@ -22,8 +22,6 @@ export default function ContactPage() {
       <h2>Business enquiries</h2>
       <p>For partnerships, creator collaborations, or other business enquiries, use <a href={`mailto:${siteConfig.supportEmail}`}>{siteConfig.supportEmail}</a>{siteConfig.supportPhone ? <> or contact <a href={`tel:${siteConfig.supportPhone}`}>{siteConfig.supportPhone}</a></> : null}.</p>
 
-      <h2>Business information</h2>
-      <p>{siteConfig.legalName}{siteConfig.businessAddress ? <><br />{siteConfig.businessAddress}</> : null}</p>
     </LegalPage>
   );
 }

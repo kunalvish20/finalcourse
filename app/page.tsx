@@ -143,7 +143,7 @@ function CreatorNetworkPanel({ channels }: { channels: YouTubeChannel[] }) {
         </div>
       )}
 
-      
+
     </div>
   );
 }
@@ -298,6 +298,7 @@ Once confirmed, you’ll get lifetime access to the complete course.</p></detail
           </div>
         </div>
       </section>
+
 
       <section className="finalCta">
         <div className="finalOrb" data-parallax="6" aria-hidden="true" />

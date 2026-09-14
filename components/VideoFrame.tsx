@@ -1,18 +1,57 @@
+function getYouTubeVideoId(url: URL) {
+  const hostname = url.hostname.replace(/^www\./, "");
+
+  if (hostname === "youtu.be") {
+    return url.pathname.split("/").filter(Boolean)[0] || null;
+  }
+
+  if (!hostname.endsWith("youtube.com")) {
+    return null;
+  }
+
+  if (url.pathname === "/watch") {
+    return url.searchParams.get("v");
+  }
+
+  const [type, videoId] = url.pathname.split("/").filter(Boolean);
+  if (["embed", "shorts", "live"].includes(type)) {
+    return videoId || null;
+  }
+
+  return null;
+}
+
+function getYouTubeStartSeconds(url: URL) {
+  const start = url.searchParams.get("start") || url.searchParams.get("t");
+  if (!start) return null;
+
+  const simpleSeconds = start.match(/^(\d+)s?$/);
+  if (simpleSeconds) return simpleSeconds[1];
+
+  const timeParts = start.match(/^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s?)?$/);
+  if (!timeParts) return null;
+
+  const hours = Number(timeParts[1] || 0);
+  const minutes = Number(timeParts[2] || 0);
+  const seconds = Number(timeParts[3] || 0);
+  const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+
+  return totalSeconds > 0 ? String(totalSeconds) : null;
+}
+
 function getEmbedUrl(url: string) {
   try {
     const parsed = new URL(url);
-    const videoId = parsed.hostname === "youtu.be"
-      ? parsed.pathname.slice(1)
-      : parsed.searchParams.get("v");
+    const videoId = getYouTubeVideoId(parsed);
 
-    if (videoId && (parsed.hostname === "youtu.be" || parsed.hostname.includes("youtube.com"))) {
+    if (videoId) {
       const embedUrl = new URL(`https://www.youtube.com/embed/${videoId}`);
       const playlist = parsed.searchParams.get("list");
-      const start = parsed.searchParams.get("start") || parsed.searchParams.get("t");
+      const start = getYouTubeStartSeconds(parsed);
       const si = parsed.searchParams.get("si");
 
       if (playlist) embedUrl.searchParams.set("list", playlist);
-      if (start) embedUrl.searchParams.set("start", start.replace("s", ""));
+      if (start) embedUrl.searchParams.set("start", start);
       if (si) embedUrl.searchParams.set("si", si);
 
       return embedUrl.toString();
