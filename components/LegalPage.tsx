@@ -14,7 +14,7 @@ export default function LegalPage({
   return (
     <main className="legalPage">
       <header className="courseNav container">
-        <Link href="/" className="logo"><span className="logoMark">G</span><span>{siteConfig.creator}</span></Link>
+        <Link href="/" className="logo"><img src="/Logo_dattrax.jpg" alt="Dattrax" className="logoImg" /><span>{siteConfig.creator}</span></Link>
         <Link href="/buy" className="legalBuy">BUY COURSE →</Link>
       </header>
       <article className="legalContent container" data-reveal="">

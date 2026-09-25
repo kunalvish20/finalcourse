@@ -59,7 +59,7 @@ export default function LoginPage() {
 
       <header className="loginHeader">
         <a href="/" className="loginBrand">
-          <div className="loginBrandMark">D</div>
+          <img src="/Logo_dattrax.jpg" alt="Dattrax" className="loginBrandLogo" />
 
           <div>
             <strong>DATTRAX GAMING</strong>

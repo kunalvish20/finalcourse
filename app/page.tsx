@@ -313,7 +313,7 @@ Once confirmed, you’ll get lifetime access to the complete course.</p></detail
       <footer className="footer container">
         <div className="logo"><img src="/Logo_dattrax.jpg" alt="Dattrax" className="logoImg" /><span>DATTRAX GAMING</span></div>
         <p>© 2026 · {siteConfig.courseName}</p>
-        <div className="footerLinks"><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/contact">Contact</a></div>
+        <div className="footerLinks"><a href="/about">About</a><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/contact">Contact</a></div>
         <a href="#top">BACK TO TOP ↑</a>
       </footer>
 
