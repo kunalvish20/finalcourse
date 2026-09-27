@@ -10,7 +10,6 @@ export default function SiteFooter() {
       </Link>
       <p>&copy; 2026 - {siteConfig.courseName}</p>
       <div className="footerLinks">
-        <Link href="/about">About</Link>
         <Link href="/terms">Terms</Link>
         <Link href="/privacy">Privacy</Link>
         <Link href="/contact">Contact</Link>
