@@ -81,11 +81,9 @@ Set:
 COURSE_PRICE_INR=499
 ```
 
-The server owns the price and calculates GST at 18%. With `499` the totals are:
+The server owns the final price. With `499` the amount charged is:
 
-- Course: ₹499.00
-- GST 18%: ₹89.82
-- Total charged: ₹588.82
+- Final price: ₹499.00
 
 The landing page MRP strike-through is controlled separately by:
 

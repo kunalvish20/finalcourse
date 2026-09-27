@@ -273,7 +273,7 @@ export default async function Home() {
               <strong>{siteConfig.priceLabel}</strong>
             </div>
             <div className="priceSave"><span>LAUNCH PRICE</span><b>LIMITED ACCESS OFFER</b></div>
-            <small>COURSE FEE · GST ADDED SECURELY AT CHECKOUT</small>
+            <small>FINAL PRICE · NO EXTRA TAX AT CHECKOUT</small>
             <BuyButton label={`BUY COURSE · ${siteConfig.priceLabel}`} />
             <p>Secure checkout powered by PayU. Access unlocks only after payment verification.</p>
           </div>

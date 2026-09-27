@@ -11,7 +11,7 @@ Production-oriented Next.js 16 course website with a premium responsive landing 
 - Google OAuth through Supabase Auth.
 - User profile stored in Supabase (`profiles`) with name, email and phone.
 - Phone is collected once at checkout because Google OAuth does not reliably provide it.
-- Server-owned course price from `COURSE_PRICE_INR`; GST is calculated at 18% on the server.
+- Server-owned final course price from `COURSE_PRICE_INR`; PayU charges exactly this amount.
 - PayU request hashing, reverse-response hash validation, and server-to-server `verify_payment` verification.
 - Pending payment order is created before redirecting to PayU, so callback processing does not depend on browser cookies.
 - Atomic `finalize_course_purchase` database function grants lifetime entitlement after verified successful payment.
