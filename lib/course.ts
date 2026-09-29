@@ -3,8 +3,9 @@ export const COURSE_SLUG = "youtube-gaming-blueprint";
 const configuredPrice = Number(process.env.COURSE_PRICE_INR || "499");
 const safePriceInr = Number.isFinite(configuredPrice) && configuredPrice > 0 ? configuredPrice : 499;
 
+export const COURSE_GST_RATE = 0.18;
 export const COURSE_BASE_PRICE_PAISE = Math.round(safePriceInr * 100);
-export const COURSE_GST_PAISE = 0;
+export const COURSE_GST_PAISE = Math.round(COURSE_BASE_PRICE_PAISE * COURSE_GST_RATE);
 export const COURSE_TOTAL_PAISE = COURSE_BASE_PRICE_PAISE + COURSE_GST_PAISE;
 
 export function paiseToRupees(paise: number) {

@@ -83,7 +83,9 @@ COURSE_PRICE_INR=499
 
 The server owns the final price. With `499` the amount charged is:
 
-- Final price: ₹499.00
+- Course price: ₹499.00
+- GST (18%): ₹89.82
+- Final price: ₹588.82
 
 The landing page MRP strike-through is controlled separately by:
 

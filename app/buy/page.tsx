@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import CheckoutButton from "@/components/CheckoutButton";
 import SignOutButton from "@/components/SignOutButton";
 import { getCurrentProfile, getCurrentUser, hasLifetimeCourseAccess } from "@/lib/auth";
-import { COURSE_TOTAL_PAISE, formatINRFromPaise } from "@/lib/course";
+import { COURSE_BASE_PRICE_PAISE, COURSE_GST_PAISE, COURSE_GST_RATE, COURSE_TOTAL_PAISE, formatINRFromPaise } from "@/lib/course";
 import { modules, siteConfig } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
@@ -50,8 +50,12 @@ export default async function BuyPage({ searchParams }: { searchParams: Promise<
           {paymentMessage ? <div className="paymentBanner">{paymentMessage}</div> : null}
 
           <div className="orderLine">
-            <span>Final price</span>
-            <span>{formatINRFromPaise(COURSE_TOTAL_PAISE, true)}</span>
+            <span>Course price</span>
+            <span>{formatINRFromPaise(COURSE_BASE_PRICE_PAISE, true)}</span>
+          </div>
+          <div className="orderLine">
+            <span>GST ({Math.round(COURSE_GST_RATE * 100)}%)</span>
+            <span>{formatINRFromPaise(COURSE_GST_PAISE, true)}</span>
           </div>
           <div className="orderLine muted">
             <span>Access type</span>
