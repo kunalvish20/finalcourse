@@ -162,24 +162,12 @@ export default function CheckoutButton({
 
   return (
     <>
-      <div className="orderLine">
-        <span>Course price</span>
-        <span>{formatINRFromPaise(basePricePaise, true)}</span>
-      </div>
-      <div className="orderLine">
-        <span>GST ({Math.round(gstRate * 100)}%)</span>
-        <span>{formatINRFromPaise(gstPaise, true)}</span>
-      </div>
-      <div className="orderLine muted">
-        <span>Access type</span>
-        <span>Lifetime · Your account</span>
+      <div className="checkoutPriceBreakdown" aria-label="Course price and tax">
+        <span>Course price <strong>{formatINRFromPaise(basePricePaise, true)}</strong></span>
+        <span>GST ({Math.round(gstRate * 100)}%) <strong>{formatINRFromPaise(gstPaise, true)}</strong></span>
       </div>
 
       <div className={`couponBox${coupon ? " couponBoxApplied" : ""}`}>
-        <div className="couponHeading">
-          <span className="couponTicket"><TicketIcon /></span>
-          <div><strong>Have a coupon?</strong><span>Unlock your course offer</span></div>
-        </div>
         {coupon ? (
           <div className="couponAppliedState" role="status" aria-live="polite">
             <span className="couponCheck"><CheckIcon /></span>
@@ -189,13 +177,19 @@ export default function CheckoutButton({
             <span className="couponSparkles" aria-hidden="true"><i /><i /><i /><i /><i /><i /></span>
           </div>
         ) : (
-          <form className="couponForm" onSubmit={applyCoupon}>
-            <label className="couponInputWrap">
-              <span className="srOnly">Coupon code</span>
-              <input value={couponInput} onChange={event => { setCouponInput(event.target.value); setCouponError(""); }} placeholder="Enter coupon code" autoComplete="off" maxLength={32} disabled={couponLoading || loading} aria-invalid={!!couponError} aria-describedby={couponError ? "coupon-error" : undefined} />
-            </label>
-            <button type="submit" disabled={couponLoading || loading}>{couponLoading ? "CHECKING…" : "APPLY"}</button>
-          </form>
+          <>
+            <div className="couponHeading">
+              <span className="couponTicket"><TicketIcon /></span>
+              <div><strong>Have a coupon?</strong><span>Apply your code below</span></div>
+            </div>
+            <form className="couponForm" onSubmit={applyCoupon}>
+              <label className="couponInputWrap">
+                <span className="srOnly">Coupon code</span>
+                <input value={couponInput} onChange={event => { setCouponInput(event.target.value); setCouponError(""); }} placeholder="Enter coupon code" autoComplete="off" maxLength={32} disabled={couponLoading || loading} aria-invalid={!!couponError} aria-describedby={couponError ? "coupon-error" : undefined} />
+              </label>
+              <button type="submit" disabled={couponLoading || loading}>{couponLoading ? "CHECKING…" : "APPLY"}</button>
+            </form>
+          </>
         )}
         {couponError ? <p id="coupon-error" className="couponError" role="alert">{couponError}</p> : null}
       </div>
@@ -212,24 +206,27 @@ export default function CheckoutButton({
         </div>
       </div>
 
-      <form className="checkoutCustomerForm" onSubmit={startCheckout}>
+      <form id="course-checkout-form" className="checkoutCustomerForm" onSubmit={startCheckout}>
         <label>
           <span>Full name</span>
           <input name="firstname" type="text" defaultValue={defaultName} placeholder="Your name" autoComplete="name" minLength={2} maxLength={60} required />
         </label>
         <label>
-          <span>Email address</span>
-          <input type="email" value={email} readOnly aria-readonly="true" />
-        </label>
-        <label>
           <span>Phone number</span>
           <input name="phone" type="tel" inputMode="numeric" defaultValue={defaultPhone} placeholder="98765 43210" autoComplete="tel" minLength={10} maxLength={18} required />
         </label>
+        <p className="checkoutAccountNote">Course access for <strong>{email}</strong></p>
         <button className="checkoutButton" disabled={loading || couponLoading} type="submit" aria-label={totalPaise === 0 ? `Unlock ${courseName} with coupon` : `Pay ${totalLabel} securely for ${courseName}`}>
           {loading ? "COMPLETING CHECKOUT..." : totalPaise === 0 ? "UNLOCK COURSE FOR FREE →" : `PAY ${totalLabel} SECURELY →`}
         </button>
         {error ? <p className="checkoutError" role="alert">{error}</p> : null}
       </form>
+      <div className="mobileCheckoutBar" aria-live="polite">
+        <span>PAYABLE <strong>{totalLabel}</strong></span>
+        <button type="submit" form="course-checkout-form" disabled={loading || couponLoading} aria-label={totalPaise === 0 ? `Unlock ${courseName} with coupon` : `Pay ${totalLabel} securely for ${courseName}`}>
+          {loading ? "PLEASE WAIT…" : totalPaise === 0 ? "UNLOCK NOW →" : "PAY SECURELY →"}
+        </button>
+      </div>
     </>
   );
 }

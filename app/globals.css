@@ -2300,3 +2300,75 @@ em { color: var(--red-hot); font-style: normal; }
     font-size: 9px;
   }
 }
+
+/* Compact course checkout */
+.checkoutPage .checkoutLayout { padding-block: clamp(22px, 4vw, 52px); }
+.checkoutPage .orderCard { padding: clamp(22px, 3vw, 34px); }
+.checkoutPage .orderCard h2 { margin: 9px 0 4px; font-size: clamp(23px, 2.4vw, 31px); line-height: 1.12; }
+.checkoutPage .orderCard > p { margin: 0 0 15px; color: #929296; font-size: 11px; line-height: 1.45; }
+.checkoutPriceBreakdown { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 11px 0 0; border-top: 1px solid var(--line-soft); }
+.checkoutPriceBreakdown > span { display: flex; justify-content: space-between; gap: 6px; color: #929296; font-size: 11px; }
+.checkoutPriceBreakdown strong { color: #d9d9db; font-weight: 750; white-space: nowrap; }
+.checkoutPage .couponBox { margin: 13px 0 0; padding: 13px; }
+.checkoutPage .couponBoxApplied { padding: 9px; }
+.checkoutPage .couponHeading { margin-bottom: 10px; }
+.checkoutPage .couponTicket { width: 30px; height: 30px; }
+.checkoutPage .couponTicket svg { width: 17px; height: 17px; }
+.checkoutPage .couponForm input { height: 42px; }
+.checkoutPage .couponAppliedState { min-height: 44px; padding: 6px 9px; }
+.checkoutPage .orderSummary { margin-top: 10px; }
+.checkoutPage .orderSummary .orderLine { padding: 7px 0; border-top: 0; font-size: 11px; }
+.checkoutPage .orderSummary .orderDiscount { border-top: 1px solid var(--line-soft); }
+.checkoutPage .orderSummary .orderTotal { align-items: center; margin-top: 4px; padding: 11px 13px; border: 1px solid rgba(255,255,255,.11); border-radius: 11px; background: rgba(255,255,255,.035); font-size: 12px; }
+.checkoutPage .orderSummary .orderTotal strong { font-size: 27px; white-space: nowrap; }
+.checkoutPage .checkoutCustomerForm { margin-top: 13px; }
+.checkoutPage .checkoutCustomerForm label { margin-bottom: 10px; }
+.checkoutPage .checkoutCustomerForm label > span { margin-bottom: 5px; }
+.checkoutPage .checkoutCustomerForm input { height: 48px; }
+.checkoutAccountNote { margin: 4px 0 10px; color: #858589; font-size: 11px; line-height: 1.45; overflow-wrap: anywhere; }
+.checkoutAccountNote strong { color: #d5d5d7; font-weight: 650; }
+.checkoutPage .checkoutCustomerForm .checkoutButton { min-height: 52px; margin-top: 3px; }
+.checkoutPage .secureNote { margin: 12px 0 5px; color: #77777b; font-size: 10px; }
+.checkoutPage .checkoutLegal { margin: 0; color: #717175; font-size: 10px; }
+.mobileCheckoutBar { display: none; }
+
+@media (max-width: 900px) {
+  .checkoutPage .checkoutLayout { min-height: auto; display: block; padding-block: 18px 82px; }
+  .checkoutPage .orderCard { width: min(100%, 620px); margin-inline: auto; }
+  .checkoutPage .checkoutLeft { display: none; }
+}
+
+@media (max-width: 650px) {
+  .checkoutPage .checkoutNav { min-height: 56px; }
+  .checkoutPage .checkoutNav .logoImg { height: 30px; }
+  .checkoutPage .checkoutNav .signOutButton { min-height: 38px; }
+  .checkoutPage .checkoutLayout { padding-block: 12px 105px; }
+  .checkoutPage .orderCard { width: 100%; padding: 18px 16px; border-radius: 15px; }
+  .checkoutPage .orderCard h2 { font-size: clamp(21px, 6.4vw, 25px); }
+  .checkoutPage .orderCard > p { margin-bottom: 12px; font-size: 10.5px; }
+  .checkoutPriceBreakdown { padding-top: 9px; }
+  .checkoutPriceBreakdown > span { display: grid; gap: 2px; font-size: 10px; }
+  .checkoutPriceBreakdown strong { font-size: 12px; }
+  .checkoutPage .couponBox { margin-top: 10px; padding: 10px; }
+  .checkoutPage .couponBoxApplied { padding: 7px; }
+  .checkoutPage .couponHeading { margin-bottom: 8px; }
+  .checkoutPage .couponHeading div > span { display: none; }
+  .checkoutPage .couponForm input { height: 42px; }
+  .checkoutPage .orderSummary { margin-top: 9px; }
+  .checkoutPage .orderSummary .orderLine { padding: 6px 0; }
+  .checkoutPage .orderSummary .orderTotal { padding: 9px 11px; }
+  .checkoutPage .orderSummary .orderTotal span { max-width: none; }
+  .checkoutPage .orderSummary .orderTotal strong { font-size: clamp(22px, 7vw, 27px); }
+  .checkoutPage .checkoutCustomerForm { margin-top: 12px; }
+  .checkoutPage .checkoutCustomerForm label { margin-bottom: 9px; }
+  .checkoutPage .checkoutCustomerForm label > span { margin-bottom: 4px; }
+  .checkoutPage .checkoutCustomerForm input { height: 46px; font-size: 16px; }
+  .checkoutPage .checkoutCustomerForm .checkoutButton { display: none; }
+  .checkoutPage .secureNote { margin-top: 12px; }
+  .mobileCheckoutBar { position: fixed; z-index: 100; inset: auto 0 0; display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 9px max(16px, env(safe-area-inset-left)) calc(9px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-right)); border-top: 1px solid rgba(255,255,255,.13); background: rgba(12,12,13,.96); box-shadow: 0 -12px 32px rgba(0,0,0,.36); backdrop-filter: blur(18px); }
+  .mobileCheckoutBar > span { display: grid; gap: 2px; color: #a3a3a7; font-size: 9px; font-weight: 800; letter-spacing: .11em; }
+  .mobileCheckoutBar strong { color: #fff; font-size: 19px; letter-spacing: -.04em; white-space: nowrap; }
+  .mobileCheckoutBar button { min-width: 146px; min-height: 45px; padding: 0 14px; border: 1px solid rgba(255,255,255,.15); border-radius: 10px; background: linear-gradient(135deg, var(--red-hot), #d90919 72%); color: white; box-shadow: 0 8px 26px rgba(243,19,36,.22); font-size: 10px; font-weight: 850; letter-spacing: .06em; cursor: pointer; }
+  .mobileCheckoutBar button:disabled { opacity: .6; cursor: wait; }
+  .checkoutPage:has(input:focus) .mobileCheckoutBar { display: none; }
+}

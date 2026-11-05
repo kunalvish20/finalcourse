@@ -42,10 +42,10 @@ export default async function BuyPage({ searchParams }: { searchParams: Promise<
       </div>
 
       <div className="checkoutLayout container">
-        <aside className="orderCard" data-reveal="left">
-          <span className="orderLabel">PAY FIRST</span>
+        <aside className="orderCard">
+          <span className="orderLabel">SECURE CHECKOUT</span>
           <h2>{siteConfig.courseName}</h2>
-          <p>Confirm your details and continue to secure PayU checkout.</p>
+          <p>Lifetime access · Linked to your account</p>
 
           {paymentMessage ? <div className="paymentBanner">{paymentMessage}</div> : null}
 
@@ -61,7 +61,7 @@ export default async function BuyPage({ searchParams }: { searchParams: Promise<
           />
 
           <div className="secureNote">
-            Payment details are handled by PayU. Access is granted only after server-side hash and transaction verification.
+            Secure payment with PayU. Access unlocks after payment verification.
           </div>
           <div className="checkoutLegal">
             By paying, you agree to our <Link href="/terms">Terms</Link> and acknowledge our <Link href="/privacy">Privacy Policy</Link>.
