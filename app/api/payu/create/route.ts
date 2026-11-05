@@ -45,8 +45,14 @@ export async function POST(request: Request) {
       throw new Error(`Could not save customer profile: ${profileError.message}`);
     }
 
-    stage = "ORDER";
     const txnid = createPayUTxnId();
+    stage = "PAYU";
+    const fields = totalPaise > 0
+      ? createPayUCheckoutFields({ txnid, amountPaise: totalPaise, customer: { firstname, email: user.email.toLowerCase(), phone } })
+      : null;
+    const action = fields ? getPayUEndpoints().checkout : null;
+
+    stage = "ORDER";
     const { error: orderError } = await admin.from("payment_orders").insert({
       txnid,
       user_id: user.id,
@@ -77,9 +83,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ completed: true }, { headers: { "Cache-Control": "no-store" } });
     }
 
-    stage = "PAYU";
-    const fields = createPayUCheckoutFields({ txnid, amountPaise: totalPaise, customer: { firstname, email: user.email.toLowerCase(), phone } });
-    return NextResponse.json({ action: getPayUEndpoints().checkout, method: "POST", fields }, { headers: { "Cache-Control": "no-store" } });
+    return NextResponse.json({ action, method: "POST", fields }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     console.error("PAYU_CREATE_FAILED", { stage, databaseCode, error });
     const message = error instanceof Error ? error.message : "Unknown payment initialization error.";

@@ -37,7 +37,11 @@ export async function POST(request: NextRequest) {
     const { data: order } = await admin.from("payment_orders").select("txnid,user_id,total_paise,customer_email").eq("txnid", txnid).maybeSingle();
     if (!order) return go("/buy?payment=unverified");
     if (String(params.status || "").toLowerCase() !== "success") {
-      await admin.from("payment_orders").update({ status: "failed", updated_at: new Date().toISOString() }).eq("txnid", txnid);
+      const { error: failureError } = await admin.from("payment_orders")
+        .update({ status: "failed", updated_at: new Date().toISOString() })
+        .eq("txnid", txnid)
+        .eq("status", "pending");
+      if (failureError) throw failureError;
       return go("/buy?payment=failed");
     }
 
@@ -53,7 +57,7 @@ export async function POST(request: NextRequest) {
     });
     if (error) throw error;
     await admin.from("payment_events").insert({ txnid, event_type: "callback_verified", payload: { status: payment.status, unmappedstatus: payment.unmappedstatus, mihpayid: payment.mihpayid } });
-    return go("/opencourse?payment=success");
+    return go("/thank-you");
   } catch (error) {
     console.error("PAYU_CALLBACK_FAILED", error);
     return go("/buy?payment=error");

@@ -26,7 +26,8 @@ export async function POST(request: NextRequest) {
       if (!order) return NextResponse.json({ ok: true });
       const refund = await verifyPayURefund(requestId);
       if (refund.status === "success" && refund.action === "refund" && refund.mihpayid === String(order.payu_mihpayid || "").trim() && refund.amountPaise >= order.total_paise) {
-        await admin.rpc("mark_course_payment_inactive", { p_txnid: txnid, p_status: "refunded" });
+        const { error: refundError } = await admin.rpc("mark_course_payment_inactive", { p_txnid: txnid, p_status: "refunded" });
+        if (refundError) throw refundError;
         await admin.from("payment_events").insert({ txnid, event_type: "refund_verified", payload: { request_id: requestId, mihpayid: refund.mihpayid, amount_paise: refund.amountPaise } });
       }
       return NextResponse.json({ ok: true });
@@ -42,8 +43,10 @@ export async function POST(request: NextRequest) {
     const payment = await verifyPayUPayment(txnid);
     if (!payUPaymentMatchesOrder(payment, { txnid, amountPaise: order.total_paise, email: order.customer_email })) return NextResponse.json({ ok: true });
 
-    if (payUPaymentIsActiveSuccess(payment)) await admin.rpc("finalize_course_purchase", { p_txnid: txnid, p_mihpayid: payment.mihpayid || null, p_verified_status: payment.status });
-    else await admin.rpc("mark_course_payment_inactive", { p_txnid: txnid, p_status: normalizeInactiveStatus(payment) });
+    const { error: statusError } = payUPaymentIsActiveSuccess(payment)
+      ? await admin.rpc("finalize_course_purchase", { p_txnid: txnid, p_mihpayid: payment.mihpayid || null, p_verified_status: payment.status })
+      : await admin.rpc("mark_course_payment_inactive", { p_txnid: txnid, p_status: normalizeInactiveStatus(payment) });
+    if (statusError) throw statusError;
     await admin.from("payment_events").insert({ txnid, event_type: "webhook_verified", payload: { status: payment.status, unmappedstatus: payment.unmappedstatus, mihpayid: payment.mihpayid } });
     return NextResponse.json({ ok: true });
   } catch (error) {

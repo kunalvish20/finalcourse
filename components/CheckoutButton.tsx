@@ -151,7 +151,7 @@ export default function CheckoutButton({
       });
       const data = await response.json().catch(() => ({})) as PayUCreateResponse;
       if (response.ok && data.completed && totalPaise === 0) {
-        window.location.assign("/opencourse?payment=success");
+        window.location.assign("/thank-you");
         return;
       }
       if (!response.ok || !data.action || !data.fields) {

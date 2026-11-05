@@ -21,6 +21,7 @@ Create a project, open **SQL Editor**, and run:
 `supabase/migrations/202609120001_course_platform.sql`
 
 Then run `supabase/migrations/202611050001_dax100_coupon.sql` before deploying the coupon checkout changes.
+If that migration was already run, also run `supabase/migrations/202611050002_remove_legacy_payment_total_check.sql`. It removes an older price constraint that still rejects discounted orders on some existing projects. Run this repair migration after `202611050001` on new projects as well.
 
 Confirm these tables exist in Table Editor:
 

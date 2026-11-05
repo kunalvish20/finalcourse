@@ -825,6 +825,8 @@ em { color: var(--red-hot); font-style: normal; }
 .lockBadge { display: inline-flex; margin-bottom: 26px; padding: 8px 11px; border: 1px solid rgba(243,19,36,.32); border-radius: 999px; background: rgba(243,19,36,.075); color: #ff6973; font-size: 8px; font-weight: 850; letter-spacing: .17em; }
 .lockBadge.warning { color: var(--warning); border-color: rgba(232,174,85,.3); background: rgba(232,174,85,.07); }
 .lockIcon { width: 60px; height: 60px; display: grid; place-items: center; margin: 0 auto 28px; border: 1px solid rgba(255,255,255,.11); border-radius: 50%; background: #0b0b0c; color: var(--red-hot); font-size: 24px; }
+.thankYouBadge { color: #8ce4ae; border-color: rgba(73,216,139,.3); background: rgba(73,216,139,.08); }
+.thankYouIcon { border-color: rgba(73,216,139,.3); background: rgba(73,216,139,.12); color: var(--success); box-shadow: 0 0 35px rgba(73,216,139,.12); }
 .lockedCard h1 { margin-bottom: 22px; }
 .lockedCard > p { max-width: 500px; margin: 0 auto 30px; color: #858588; font-size: 13px; line-height: 1.72; }
 .backHome { display: block; margin-top: 22px; color: #6e6e71; font-size: 10px; transition: color .22s ease; }
