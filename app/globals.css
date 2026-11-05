@@ -2365,10 +2365,10 @@ em { color: var(--red-hot); font-style: normal; }
   .checkoutPage .checkoutCustomerForm input { height: 46px; font-size: 16px; }
   .checkoutPage .checkoutCustomerForm .checkoutButton { display: none; }
   .checkoutPage .secureNote { margin-top: 12px; }
-  .mobileCheckoutBar { position: fixed; z-index: 100; inset: auto 0 0; display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 9px max(16px, env(safe-area-inset-left)) calc(9px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-right)); border-top: 1px solid rgba(255,255,255,.13); background: rgba(12,12,13,.96); box-shadow: 0 -12px 32px rgba(0,0,0,.36); backdrop-filter: blur(18px); }
+  .mobileCheckoutBar { position: fixed; z-index: 100; inset: auto 0 0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 14px; padding: 9px max(16px, env(safe-area-inset-left)) calc(9px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-right)); border-top: 1px solid rgba(255,255,255,.13); background: rgba(12,12,13,.96); box-shadow: 0 -12px 32px rgba(0,0,0,.36); backdrop-filter: blur(18px); }
+  .mobileCheckoutError { flex-basis: 100%; margin: 0; color: #ff9aa1; font-size: 11px; line-height: 1.4; }
   .mobileCheckoutBar > span { display: grid; gap: 2px; color: #a3a3a7; font-size: 9px; font-weight: 800; letter-spacing: .11em; }
   .mobileCheckoutBar strong { color: #fff; font-size: 19px; letter-spacing: -.04em; white-space: nowrap; }
   .mobileCheckoutBar button { min-width: 146px; min-height: 45px; padding: 0 14px; border: 1px solid rgba(255,255,255,.15); border-radius: 10px; background: linear-gradient(135deg, var(--red-hot), #d90919 72%); color: white; box-shadow: 0 8px 26px rgba(243,19,36,.22); font-size: 10px; font-weight: 850; letter-spacing: .06em; cursor: pointer; }
   .mobileCheckoutBar button:disabled { opacity: .6; cursor: wait; }
-  .checkoutPage:has(input:focus) .mobileCheckoutBar { display: none; }
 }

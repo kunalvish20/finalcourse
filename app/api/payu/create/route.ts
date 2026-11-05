@@ -12,6 +12,8 @@ const cleanName = (v: unknown) => String(v ?? "").trim().replace(/[|\r\n\t]+/g, 
 const cleanPhone = (v: unknown) => String(v ?? "").replace(/\D/g, "").slice(-10);
 
 export async function POST(request: Request) {
+  let stage = "REQUEST";
+  let databaseCode: string | undefined;
   try {
     const user = await getCurrentUser();
     if (!user?.email) return NextResponse.json({ error: "Please sign in with Google first." }, { status: 401 });
@@ -28,6 +30,7 @@ export async function POST(request: Request) {
     if (firstname.length < 2) return NextResponse.json({ error: "Enter your full name." }, { status: 400 });
     if (phone.length !== 10) return NextResponse.json({ error: "Enter a valid 10-digit phone number." }, { status: 400 });
 
+    stage = "PROFILE";
     const admin = createAdminClient();
     const { error: profileError } = await admin.from("profiles").upsert({
       id: user.id,
@@ -37,8 +40,12 @@ export async function POST(request: Request) {
       avatar_url: user.user_metadata?.avatar_url || user.user_metadata?.picture || null,
       updated_at: new Date().toISOString(),
     }, { onConflict: "id" });
-    if (profileError) throw new Error(`Could not save customer profile: ${profileError.message}`);
+    if (profileError) {
+      databaseCode = profileError.code;
+      throw new Error(`Could not save customer profile: ${profileError.message}`);
+    }
 
+    stage = "ORDER";
     const txnid = createPayUTxnId();
     const { error: orderError } = await admin.from("payment_orders").insert({
       txnid,
@@ -55,21 +62,29 @@ export async function POST(request: Request) {
       customer_email: user.email.toLowerCase(),
       customer_phone: phone,
     });
-    if (orderError) throw new Error(`Could not create payment order: ${orderError.message}`);
+    if (orderError) {
+      databaseCode = orderError.code;
+      throw new Error(`Could not create payment order: ${orderError.message}`);
+    }
 
     if (totalPaise === 0) {
+      stage = "ENROLLMENT";
       const { error: grantError } = await admin.rpc("finalize_zero_total_coupon_purchase", { p_txnid: txnid });
-      if (grantError) throw new Error(`Could not complete coupon enrollment: ${grantError.message}`);
+      if (grantError) {
+        databaseCode = grantError.code;
+        throw new Error(`Could not complete coupon enrollment: ${grantError.message}`);
+      }
       return NextResponse.json({ completed: true }, { headers: { "Cache-Control": "no-store" } });
     }
 
+    stage = "PAYU";
     const fields = createPayUCheckoutFields({ txnid, amountPaise: totalPaise, customer: { firstname, email: user.email.toLowerCase(), phone } });
     return NextResponse.json({ action: getPayUEndpoints().checkout, method: "POST", fields }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
-    console.error("PAYU_CREATE_FAILED", error);
+    console.error("PAYU_CREATE_FAILED", { stage, databaseCode, error });
     const message = error instanceof Error ? error.message : "Unknown payment initialization error.";
     return NextResponse.json(
-      { error: process.env.NODE_ENV === "development" ? message : "Unable to start secure checkout. Please retry." },
+      { error: process.env.NODE_ENV === "development" ? message : "Unable to start secure checkout. Please retry.", code: databaseCode ? `${stage}_${databaseCode}` : stage },
       { status: 500 },
     );
   }

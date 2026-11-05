@@ -16,6 +16,7 @@ type PayUCreateResponse = {
   method?: "POST";
   fields?: Record<string, string>;
   error?: string;
+  code?: string;
 };
 
 function submitPayUForm(action: string, fields: Record<string, string>) {
@@ -91,6 +92,8 @@ export default function CheckoutButton({
     setCouponLoading(true);
     setCouponError("");
     setError("");
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), 10_000);
 
     try {
       const response = await fetch("/api/coupons/validate", {
@@ -98,6 +101,7 @@ export default function CheckoutButton({
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({ couponCode: couponInput }),
         cache: "no-store",
+        signal: controller.signal,
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok) throw new Error(data.error || "Could not validate the coupon. Please retry.");
@@ -107,8 +111,9 @@ export default function CheckoutButton({
       setCoupon(data as CouponQuote);
       setCouponInput("DAX100");
     } catch (err) {
-      setCouponError(err instanceof Error ? err.message : "Could not validate the coupon. Please retry.");
+      setCouponError(err instanceof Error && err.name === "AbortError" ? "Coupon check took too long. Please retry." : err instanceof Error ? err.message : "Could not validate the coupon. Please retry.");
     } finally {
+      window.clearTimeout(timeoutId);
       setCouponLoading(false);
     }
   }
@@ -133,6 +138,8 @@ export default function CheckoutButton({
       phone: String(formData.get("phone") || "").trim(),
       couponCode: coupon?.code,
     };
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), 15_000);
 
     try {
       const response = await fetch("/api/payu/create", {
@@ -140,6 +147,7 @@ export default function CheckoutButton({
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify(payload),
         cache: "no-store",
+        signal: controller.signal,
       });
       const data = await response.json().catch(() => ({})) as PayUCreateResponse;
       if (response.ok && data.completed && totalPaise === 0) {
@@ -147,7 +155,7 @@ export default function CheckoutButton({
         return;
       }
       if (!response.ok || !data.action || !data.fields) {
-        throw new Error(data.error || "Could not create the PayU checkout request.");
+        throw new Error(`${data.error || "Could not create the PayU checkout request."}${data.code ? ` Reference: ${data.code}.` : ""}`);
       }
       if (data.fields.amount !== (totalPaise / 100).toFixed(2)) {
         throw new Error("Course pricing changed. Please refresh checkout and try again.");
@@ -155,8 +163,10 @@ export default function CheckoutButton({
 
       submitPayUForm(data.action, data.fields);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong while opening checkout.");
+      setError(err instanceof Error && err.name === "AbortError" ? "Checkout took too long. Please retry." : err instanceof Error ? err.message : "Something went wrong while opening checkout.");
       setLoading(false);
+    } finally {
+      window.clearTimeout(timeoutId);
     }
   }
 
@@ -206,7 +216,16 @@ export default function CheckoutButton({
         </div>
       </div>
 
-      <form id="course-checkout-form" className="checkoutCustomerForm" onSubmit={startCheckout}>
+      <form
+        id="course-checkout-form"
+        className="checkoutCustomerForm"
+        onSubmit={startCheckout}
+        onInvalidCapture={event => {
+          const field = event.target as HTMLInputElement;
+          setError(field.name === "phone" ? "Enter a valid 10-digit phone number." : "Enter your full name.");
+        }}
+        onInputCapture={() => { if (error) setError(""); }}
+      >
         <label>
           <span>Full name</span>
           <input name="firstname" type="text" defaultValue={defaultName} placeholder="Your name" autoComplete="name" minLength={2} maxLength={60} required />
@@ -222,6 +241,7 @@ export default function CheckoutButton({
         {error ? <p className="checkoutError" role="alert">{error}</p> : null}
       </form>
       <div className="mobileCheckoutBar" aria-live="polite">
+        {error ? <p className="mobileCheckoutError">{error}</p> : null}
         <span>PAYABLE <strong>{totalLabel}</strong></span>
         <button type="submit" form="course-checkout-form" disabled={loading || couponLoading} aria-label={totalPaise === 0 ? `Unlock ${courseName} with coupon` : `Pay ${totalLabel} securely for ${courseName}`}>
           {loading ? "PLEASE WAIT…" : totalPaise === 0 ? "UNLOCK NOW →" : "PAY SECURELY →"}
