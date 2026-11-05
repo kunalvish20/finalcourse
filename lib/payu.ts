@@ -1,7 +1,6 @@
 import crypto from "node:crypto";
 import {
   COURSE_SLUG,
-  COURSE_TOTAL_PAISE,
   paiseToRupees,
 } from "@/lib/course";
 
@@ -123,13 +122,14 @@ export function createPayURequestHash(fields: Omit<PayUFormFields, "hash">) {
 
 export function createPayUCheckoutFields(input: {
   txnid: string;
+  amountPaise: number;
   customer: PayUCustomer;
 }) {
   const { key } = getPayUCredentials();
   const fields: Omit<PayUFormFields, "hash"> = {
     key,
     txnid: input.txnid,
-    amount: paiseToRupees(COURSE_TOTAL_PAISE),
+    amount: paiseToRupees(input.amountPaise),
     productinfo: PAYU_PRODUCT_INFO,
     firstname: input.customer.firstname,
     email: input.customer.email,
@@ -137,7 +137,7 @@ export function createPayUCheckoutFields(input: {
     surl: getPayUCallbackUrl(),
     furl: getPayUCallbackUrl(),
     udf1: COURSE_SLUG,
-    udf2: String(COURSE_TOTAL_PAISE),
+    udf2: String(input.amountPaise),
     udf3: "",
     udf4: "",
     udf5: "",

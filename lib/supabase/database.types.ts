@@ -34,6 +34,8 @@ export type Database = {
           course_slug: string;
           subtotal_paise: number;
           gst_paise: number;
+          coupon_code: string | null;
+          discount_paise: number;
           total_paise: number;
           currency: string;
           status: string;
@@ -51,6 +53,8 @@ export type Database = {
           course_slug: string;
           subtotal_paise: number;
           gst_paise: number;
+          coupon_code?: string | null;
+          discount_paise?: number;
           total_paise: number;
           currency?: string;
           status?: string;
@@ -104,6 +108,10 @@ export type Database = {
     };
     Views: Record<string, never>;
     Functions: {
+      finalize_zero_total_coupon_purchase: {
+        Args: { p_txnid: string };
+        Returns: undefined;
+      };
       finalize_course_purchase: {
         Args: { p_txnid: string; p_mihpayid: string | null; p_verified_status: string };
         Returns: undefined;

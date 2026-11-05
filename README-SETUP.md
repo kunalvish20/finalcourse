@@ -20,6 +20,8 @@ Create a project, open **SQL Editor**, and run:
 
 `supabase/migrations/202609120001_course_platform.sql`
 
+Then run `supabase/migrations/202611050001_dax100_coupon.sql` before deploying the coupon checkout changes.
+
 Confirm these tables exist in Table Editor:
 
 - `profiles`
@@ -86,6 +88,9 @@ The server owns the final price. With `499` the amount charged is:
 - Course price: ₹499.00
 - GST (18%): ₹89.82
 - Final price: ₹588.82
+
+The checkout accepts the single coupon `DAX100` for up to ₹100 off the final course amount. With the price above, PayU charges ₹488.82. The server revalidates the code when creating the order and signs the discounted amount sent to PayU.
+If the configured total is ₹100 or less, a valid coupon completes a zero-total enrollment on the server without opening PayU.
 
 The landing page MRP strike-through is controlled separately by:
 

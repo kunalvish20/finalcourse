@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import CheckoutButton from "@/components/CheckoutButton";
 import SignOutButton from "@/components/SignOutButton";
 import { getCurrentProfile, getCurrentUser, hasLifetimeCourseAccess } from "@/lib/auth";
-import { COURSE_BASE_PRICE_PAISE, COURSE_GST_PAISE, COURSE_GST_RATE, COURSE_TOTAL_PAISE, formatINRFromPaise } from "@/lib/course";
+import { COURSE_BASE_PRICE_PAISE, COURSE_GST_PAISE, COURSE_GST_RATE, COURSE_TOTAL_PAISE } from "@/lib/course";
 import { modules, siteConfig } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
@@ -49,26 +49,12 @@ export default async function BuyPage({ searchParams }: { searchParams: Promise<
 
           {paymentMessage ? <div className="paymentBanner">{paymentMessage}</div> : null}
 
-          <div className="orderLine">
-            <span>Course price</span>
-            <span>{formatINRFromPaise(COURSE_BASE_PRICE_PAISE, true)}</span>
-          </div>
-          <div className="orderLine">
-            <span>GST ({Math.round(COURSE_GST_RATE * 100)}%)</span>
-            <span>{formatINRFromPaise(COURSE_GST_PAISE, true)}</span>
-          </div>
-          <div className="orderLine muted">
-            <span>Access type</span>
-            <span>Lifetime - Your account</span>
-          </div>
-          <div className="orderTotal">
-            <span>Total</span>
-            <strong>{formatINRFromPaise(COURSE_TOTAL_PAISE, true)}</strong>
-          </div>
-
           <CheckoutButton
             courseName={siteConfig.courseName}
-            totalLabel={formatINRFromPaise(COURSE_TOTAL_PAISE, true)}
+            basePricePaise={COURSE_BASE_PRICE_PAISE}
+            gstPaise={COURSE_GST_PAISE}
+            originalTotalPaise={COURSE_TOTAL_PAISE}
+            gstRate={COURSE_GST_RATE}
             defaultName={name}
             email={email}
             defaultPhone={phone}
@@ -82,14 +68,15 @@ export default async function BuyPage({ searchParams }: { searchParams: Promise<
           </div>
         </aside>
 
-        <section className="checkoutLeft" data-reveal="right">
-          {/* <div className="eyebrow"><span /> INSTANT ACCESS AFTER PAYMENT</div>
-          <h1>GET THE BEST GAMING COURSE <br />FOR YOUR GAMING PASSION!</h1>
-          <p>
-            Pay first to unlock the course on this Google account. After PayU confirms the transaction, your verified
-            course access is available on future logins.
-          </p> */}
-          
+        <section className="checkoutLeft" data-reveal="right" aria-label="Course benefits">
+          <div className="eyebrow"><span /> YOUR NEXT LEVEL STARTS HERE</div>
+          <h1>YOUR GAMING CHANNEL, BUILT WITH A PLAN.</h1>
+          <p>Get lifetime access to a practical creator blueprint. Your course unlocks on this account after PayU verifies your payment.</p>
+          <div className="checkoutBenefits">
+            {[modules[1], modules[4], modules[6]].map(([number, title]) => (
+              <div key={number}><b>{number}</b><span>{title}</span><i aria-hidden="true">↗</i></div>
+            ))}
+          </div>
         </section>
       </div>
     </main>
