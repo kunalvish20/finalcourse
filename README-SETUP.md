@@ -101,6 +101,14 @@ NEXT_PUBLIC_COURSE_MRP="₹1,999"
 
 ## 6) Run
 
+The protected course page shows the GTA Master Video above the original nine lessons. Its Mux player URL is included in the course page. To replace it later, set `COURSE_GTA_MASTER_VIDEO_URL` in `.env.local` and in your production environment:
+
+```env
+COURSE_GTA_MASTER_VIDEO_URL=https://player.mux.com/YOUR_NEW_PLAYBACK_ID
+```
+
+The original `COURSE_VIDEO_1_URL` through `COURSE_VIDEO_9_URL` settings keep their existing order. The supplied GTA playback URL is public and plays directly in the protected course page.
+
 ```bash
 npm run dev
 ```
